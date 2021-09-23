@@ -14,8 +14,8 @@ Ilya Mochalov 2021/09
 2. Project Acme 
 3. Docker
 4. GitHub Actions and Registry
-4. Workshop 
-5. Next
+5. Next 
+6. Q and A
 
 ---
 
@@ -128,4 +128,71 @@ You can:
 
 # 4.1 Building your first action
 
-1. 
+1. Add a file `.github/workflows/build.yml`
+
+```yaml
+on: [push]
+
+name: build
+
+jobs:
+
+  build:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Determine Docker image tag and name
+        id: determine_tag
+        run: |
+          ref="${GITHUB_REF##*/}"
+          echo "::set-output name=ref::$(echo $ref)"
+          echo "::set-output name=image_full::$(echo ghcr.io/${GITHUB_REPOSITORY}:$ref)"
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+
+      - name: Build docker image
+        run: docker build -t ${{ steps.determine_tag.outputs.image_full }} .
+        working-directory: ./app
+```
+
+---
+
+2. Add push to a GitHub Registry
+
+```yaml
+
+      - name: Push docker image
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ilyamochalov --password-stdin
+          docker push ${{ steps.determine_tag.outputs.image_full }} 
+
+
+```
+
+---
+
+# 4.2 GitHub Actions Homework
+
+1. Add simple unit test file to our `app`
+2. Create a new workflow at  `.github/workflows/test.yml`
+  - what triggers do you want to use?
+  - how can we stop merging our code if test fails? 
+
+---
+
+# 5. Next
+
+1. How to deploy and where?
+  - ali/tencent/qing cloud
+2. What tools to use?
+  - Ansible
+  - Docker
+  - GitHub actions
+
+---
+
+# 6. Q and A
