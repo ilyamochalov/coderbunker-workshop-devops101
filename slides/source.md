@@ -115,10 +115,9 @@ Pass a configurations to your application as environmental variables
 
 # 4. GitHub Actions and Container Registry
 - CI/CD that is integrated right into your code repository
-
-Features and pricing: https://github.com/features/actions
-Syntax: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-Find actions: https://github.com/marketplace?type=actions
+- Features and pricing: https://github.com/features/actions
+- Syntax: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
+- Find actions: https://github.com/marketplace?type=actions
 
 You can:
 - run tests
