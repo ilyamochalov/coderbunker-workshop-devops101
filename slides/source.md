@@ -13,7 +13,7 @@ Ilya Mochalov 2021/09
 1. What is DevOps and CI/CD?
 2. Project Acme 
 3. Docker
-2. GitHub Actions and Registry
+4. GitHub Actions and Registry
 4. Workshop 
 5. Next
 
@@ -103,11 +103,30 @@ $ docker build -t devops101:latest .
 $ docker run -p 3000:3000 devops101:latest
 ```
 ---
+# 3.3 Docker Homework
 
-# 3. GitHub Actions and Container Registry
-- CI/CD that is integrated right into your code repository
+Pass a configurations to your application as environmental variables
 
-Read More: https://github.com/features/actions
+1. Edit `index.js` to return a content of env var `ENV_VAR`
+2. Rebuild an image 
+3. Update docker run command command from 3.2 so it injects an env var into running container (see [reference](https://docs.docker.com/engine/reference/run/))
 
 ---
 
+# 4. GitHub Actions and Container Registry
+- CI/CD that is integrated right into your code repository
+
+Features and pricing: https://github.com/features/actions
+Syntax: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
+Find actions: https://github.com/marketplace?type=actions
+
+You can:
+- run tests
+- build/package your code
+- release 
+
+---
+
+# 4.1 Building your first action
+
+1. 

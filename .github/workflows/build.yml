@@ -1,0 +1,16 @@
+on: [push]
+name: build
+jobs:
+  build:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+
+      - name: Build docker image
+        run: |
+          docker build -t devops101 .
+
