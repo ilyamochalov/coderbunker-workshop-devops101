@@ -14,7 +14,7 @@ jobs:
         run: |
           ref="${GITHUB_REF##*/}"
           echo "::set-output name=ref::$(echo $ref)"
-          echo "::set-output name=image_full::$(echo ghcr.io/ilyamochalov/coderbunker-workshop-devops101:$ref)"
+          echo "::set-output name=image_full::$(echo ghcr.io/${GITHUB_REPOSITORY}:$ref)"
 
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -27,6 +27,6 @@ jobs:
 
       - name: Push docker image
         run: |
-          echo ${{ secrets.SECRET_NAME }} | docker login ghcr.io -u ilyamochalov --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ilyamochalov --password-stdin
           docker push ${{ steps.determine_tag.outputs.image_full }} 
 
