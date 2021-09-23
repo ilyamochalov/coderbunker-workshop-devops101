@@ -24,16 +24,22 @@ Ilya Mochalov 2021/09
 
 Developer Operations help to easily/reliably deploy your App and keep it live! (read more: https://github.com/dwyl/learn-devops#why)
 
-CI === build, test and package  ✅
+CI === build, test and package
 
 CD === deploy/release
 
 ---
 
 # 2. Project Acme
+Description:
 - E-COMMERCE application
 - A front end (native mobile application or WeChat mini app)
-- Backend is an API that does users, products and payments; Deployed on a single server on AliCloud
+- Backend is an API that does users, products and payments management
+
+Backend can de deployed:
+- Services like Heroku, Elastic Beanstalk (AWS), Back4App
+- Elastic container registry (AWS, Alicloud), K8S, HC Nomad
+- Virtual machine (EC2, ECS, etc..) + Dockerized app ✅
 
 By the end of this workshop you will have:
 - Sample Express API project that is Dockerized
@@ -44,9 +50,58 @@ By the end of this workshop you will have:
 # 3. Docker 🚢
 <img src="https://cdn.guru99.com/images/1/101818_0504_DockerTutor1.png" alt="components" style="width: 70%;">
 
-- Allows to easily package an application and run it very easy on numerous platforms (Container Service, k8s, virtual servers)
+- Allows to easily package an application and run it very easy on numerous platforms (Container Service, k8s, virtual machine)
 - Documentation: https://docs.docker.com/get-started/overview/#docker-architecture
 
+---
+
+# 3.1 Creating Express app
+
+1. Create GitHub repo
+2. Run the following
+```sh
+$ mkdir app
+$ cd app
+$ docker run -exec -it -v $(pwd):/app -p 3000:3000 node:alpine sh
+/ # cd /app and npm init
+/app # npm install express --save
+```
+3. Create `index.js`
+```nodejs
+const express = require('express')
+const app = express()
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:3000`)
+})
+```
+4. Run the app
+```sh
+/app # node index.js 
+Example app listening at http://localhost:3000
+```
+---
+# 3.2 Build and run docker image locally
+1. Add a docker file `Dockerfile`
+```Dockerfile
+FROM node:alpine
+WORKDIR /app
+COPY . .
+RUN npm install
+EXPOSE 3000
+ENTRYPOINT ["node", "index.js"]
+```
+2. Build an image
+```sh
+$ docker build -t devops101:latest .
+```
+
+3. Run an image
+```sh
+$ docker run -p 3000:3000 devops101:latest
+```
 ---
 
 # 3. GitHub Actions and Container Registry
