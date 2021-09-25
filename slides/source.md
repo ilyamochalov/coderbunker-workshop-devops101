@@ -10,10 +10,10 @@ Ilya Mochalov 2021/09
 
 # Agenda
 
-1. What is DevOps and CI/CD?
+1. What is DevOps and CI/CD?  10:30
 2. Project Acme 
-3. Docker
-4. GitHub Actions and Registry
+3. Docker 10:45
+4. GitHub Actions and Registry 12:00
 5. Next 
 6. Q and A
 
@@ -48,7 +48,7 @@ By the end of this workshop you will have:
 ---
 
 # 3. Docker 🚢
-<img src="https://cdn.guru99.com/images/1/101818_0504_DockerTutor1.png" alt="components" style="width: 70%;">
+<img src="https://wiki.aquasec.com/download/attachments/2854889/Container_VM_Implementation.png?version=1&modificationDate=1520172703952&api=v2" alt="components" style="width: 70%;">
 
 - Allows to easily package an application and run it very easy on numerous platforms (Container Service, k8s, virtual machine)
 - Documentation: https://docs.docker.com/get-started/overview/#docker-architecture
@@ -70,11 +70,12 @@ $ docker run -exec -it -v $(pwd):/app -p 3000:3000 node:alpine sh
 ```nodejs
 const express = require('express')
 const app = express()
+const port = 3000
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:3000`)
+  console.log(`Example app listening at http://localhost:${port}`)
 })
 ```
 4. Run the app
@@ -132,28 +133,22 @@ You can:
 
 ```yaml
 on: [push]
-
 name: build
-
 jobs:
-
   build:
     name: Build docker image
     runs-on: ubuntu-latest
     steps:
-
       - name: Determine Docker image tag and name
         id: determine_tag
         run: |
           ref="${GITHUB_REF##*/}"
           echo "::set-output name=ref::$(echo $ref)"
           echo "::set-output name=image_full::$(echo ghcr.io/${GITHUB_REPOSITORY}:$ref)"
-
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: "0"
-
       - name: Build docker image
         run: docker build -t ${{ steps.determine_tag.outputs.image_full }} .
         working-directory: ./app
